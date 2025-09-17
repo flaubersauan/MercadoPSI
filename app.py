@@ -13,14 +13,19 @@ def index():
     return render_template('index.html')
 
 
-@app.route('/cadastro')
+@app.route('/cadastro', methods=['GET', 'POST'])
 def register():
-    return render_template('cadastro.html')
+    if request.method == 'GET':
+        return render_template('cadastro.html')
+    # Errado porém é só pra testar os templates
+    return url_for(redirect('index.html'))
 
-@app.route('/login')
+@app.route('/login', methods=['GET', 'POST'])
 def login():
-    return render_template('login.html')
-
+    if request.method == 'GET':
+        return render_template('login.html')
+    # Errado porém é só pra testar os templates
+    return url_for(redirect('index.html'))
 @app.route('/dashboard')
 def dash():
     return render_template('dashboard.html')

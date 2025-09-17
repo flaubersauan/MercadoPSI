@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página Inicial - TechWorld</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='index.css')}}">
+    <link rel="icon" href="{{url_for('static', filename='imagens/correto.png')}}" type="image/x-icon">
+
+</head>
+<body>
+
+    <header>
+        <div class="logo_tech">
+            <img src="{{url_for('static', filename='imagens/logo_tech.png')}}" height="70px">
+        </div>
+    </header>
+
+    <main>
+        <div class="text_container">
+            <h1>Descubra a TechWorld: o seu universo da tecnologia!</h1>
+            <p>
+                Na TechWorld, cada clique aproxima você
+                das melhores inovações do mercado. 
+                Smartphones, notebooks, acessórios e
+                os mais modernos aparelhos tecnológicos
+                estão reunidos em um só lugar, com qualidade
+                garantida e preços que cabem no seu bolso.
+            </p>
+            <div class="botoes">
+                <button class="cadastro">
+                    <a href="{{url_for('register')}}">Cadastre-se</a>
+                </button>
+                <button class="login">
+                    <a href="{{url_for('login')}}">Login</a>
+                </button>
+            </div>
+        </div>
+    </main>
+</body>
+</html>
+

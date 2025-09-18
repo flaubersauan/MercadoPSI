@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro</title>
+    <title>Login</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='formularios.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="icon" href="{{url_for('static', filename='imagens/correto.png')}}" type="image/x-icon">
@@ -16,7 +16,7 @@
     </header>
 
     <main>
-        <form action="{{ url_for('register') }}" method="POST">
+        <form action="{{ url_for('login') }}" method="POST">
             <div class="logo_tech">
                 <img src="{{url_for('static', filename='imagens/logo_tech.png')}}" height="70px">
             </div>
@@ -28,12 +28,11 @@
             
             <div class="senha">
                 <i class="fa-solid fa-key"></i>
-
                 <input type="password" name="password" placeholder="Senha" required>
             </div>
-            <button type="submit">Cadastrar</button>
-            <a href="{{url_for('login')}}">Já tem uma conta? entre aqui</a>             
+            <button type="submit">Entrar</button>
+            <a href="{{url_for('register')}}">Não tem uma conta? Registre-se aqui</a>             
         </form>
-    </main>i7
+    </main>
 </body>
-</html> 
+</html>

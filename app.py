@@ -3,34 +3,77 @@ from flask_login import *
 from bcrypt import * 
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = 'your_secret_key_here' 
 
-# cria a parte de config variavel 
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = 'login' 
 
-# criação das rotas 
+users = {} 
+
+class User(UserMixin):
+    def __init__(self, id):
+        self.id = id
+
+@login_manager.user_loader
+def load_user(user_id):
+    if user_id in users:
+        return User(user_id)
+    return None
 
 @app.route('/')
 def index():
     return render_template('index.html')
 
-
 @app.route('/cadastro', methods=['GET', 'POST'])
 def register():
-    if request.method == 'GET':
-        return render_template('cadastro.html')
-    # Errado porém é só pra testar os templates
-    return url_for(redirect('index.html'))
+    if request.method == 'POST':
+        email = request.form.get('email')
+        password = request.form.get('password')
+
+        if email in users:
+            flash('Este e-mail já está em uso.')
+            return redirect(url_for('register'))
+
+        hashed_password = hashpw(password.encode('utf-8'), gensalt())
+        
+        users[email] = hashed_password
+        
+        flash('Cadastro realizado com sucesso! Por favor, faça login.')
+        return redirect(url_for('login'))
+
+    return render_template('cadastro.html')
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    if request.method == 'GET':
-        return render_template('login.html')
-    # Errado porém é só pra testar os templates
-    return url_for(redirect('index.html'))
+    if request.method == 'POST':
+        email = request.form.get('email')
+        password = request.form.get('password')
+
+        user_hashed_password = users.get(email)
+
+        if user_hashed_password and checkpw(password.encode('utf-8'), user_hashed_password):
+            user = User(email)
+            login_user(user)
+            return redirect(url_for('dashboard'))
+        else:
+            flash('E-mail ou senha incorretos.')
+            return redirect(url_for('login'))
+
+    return render_template('login.html')
+
 @app.route('/dashboard')
-def dash():
+@login_required 
+def dashboard():
     return render_template('dashboard.html')
 
+#Quando tivermos o dashboard o logout será util
+
+# @app.route('/logout')
+# @login_required
+# def logout():
+#    logout_user()
+#    flash('Você foi desconectado.')
+#    return redirect(url_for('index'))
+
 # um arq .env (sugestao )
-
-
-

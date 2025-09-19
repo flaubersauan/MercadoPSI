@@ -31,7 +31,7 @@ Um marketplace simples feito em Flask para venda de livros, cursos e equipamento
 1. Clone o repositório:
 
 ```bash
-git clone git@github.com:flaubersauan/MercadoPSI.git
+git clone https://github.com/flaubersauan/MercadoPSI.git
 cd mercadoPSI
 ```
 

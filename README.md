@@ -56,13 +56,13 @@ pip install -r requirements.txt
 * Crie uma database chamado `mercadoPSI` (ou o nome que preferir):
 
 ```sql
-CREATE DATABASE mercadoPSI;
+CREATE DATABASE mercadopsi CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 ```
 
 * Atualize a string de conexão no arquivo de configuração do Flask:
 
 ```python
-SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://usuario:senha@localhost/mercadoPSI'
+SQLALCHEMY_DATABASE_URI = 'mysql://root:@127.0.0.1:3306/mercadopsiI'
 ```
 
 5. Inicialize o banco de dados (criação direta das tabelas):
@@ -93,13 +93,23 @@ Alteravel
 ```
 mercadoPSI/
 │
-├── app/
+├── templates/
+│   ├── base.html
+│   ├── cadastro.html
+│   ├── dashboard.html
+│   ├── index.html
+│   ├── login.html
+│   ├── produtos.html
+├── static/
+│   ├── imagens/
+│   ├── formularios.css
+│   ├── index.css
+│   ├── style.css
+├── models/
 │   ├── __init__.py
-│   ├── models.py
-│   ├── routes.py
-│   ├── templates/
-│   └── static/
-├── config.py
+├── app.py
+├── criar_tabelas.py
+├── debug_workbench.py
 ├── requirements.txt
 └── run.py
 ```

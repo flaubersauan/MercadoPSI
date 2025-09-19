@@ -67,6 +67,12 @@ def login():
 def dashboard():
     return render_template('dashboard.html')
 
+
+@app.route('/visualizar_carrinho.html')
+@login_required 
+def visualizar_carrinho():
+    return render_template('visualizar_carrinho.html')
+
 #Quando tivermos o dashboard o logout será util
 
 # @app.route('/logout')

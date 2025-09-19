@@ -11,7 +11,7 @@ body {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    background: linear-gradient(135deg, #000000, #404040);
+    background: linear-gradient(135deg, #000000, #1e1e1e);
 }
 
 header {

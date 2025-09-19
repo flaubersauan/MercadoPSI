@@ -56,7 +56,7 @@ pip install -r requirements.txt
 * Crie uma database chamado `mercadoPSI` (ou o nome que preferir):
 
 ```sql
-CREATE DATABASE mercadoPSI;
+CREATE DATABASE mercadopsi CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 ```
 
 * Atualize a string de conexão no arquivo de configuração do Flask:

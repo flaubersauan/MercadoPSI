@@ -1,25 +1,43 @@
 from flask import * 
 from flask_login import * 
-from bcrypt import * 
+from flask_bcrypt import *
+
+#import os 
+# import dotenv
+# dotenv.load_dotenv()
+
+
+from models import (
+    db,
+    User,
+    Produtos,
+    Produtos_Vendidos
+)
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'your_secret_key_here' 
+app.config['SECRET_KEY'] = 'intercurso2025' 
 
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:@127.0.0.1:3306/mercadopsi'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+db.init_app(app)
+bcrypt = Bcrypt(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login' 
 
-users = {} 
-
-class User(UserMixin):
-    def __init__(self, id):
-        self.id = id
 
 @login_manager.user_loader
 def load_user(user_id):
-    if user_id in users:
-        return User(user_id)
-    return None
+    return User.query.get(int(user_id))
+
+with app.app_context():
+    try:
+        db.create_all()
+        print("Banco de dados criado!")
+    except Exception as e:
+        print("Erro ao criar o banco de dados:", e)
+        print("Certifique-se de que o servidor MySQL está em execução e as credenciais estão corretas.")
 
 @app.route('/')
 def index():
@@ -31,15 +49,18 @@ def register():
         email = request.form.get('email')
         password = request.form.get('password')
 
-        if email in users:
-            flash('Este e-mail já está em uso.')
+        user_exists = User.query.filter_by(email=email).first()
+        if user_exists:
+            flash('E-mail já cadastrado.')
             return redirect(url_for('register'))
+        
+        hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
+        new_user = User(email=email, password=hashed_password)
 
-        hashed_password = hashpw(password.encode('utf-8'), gensalt())
-        
-        users[email] = hashed_password
-        
-        flash('Cadastro realizado com sucesso! Por favor, faça login.')
+        db.session.add(new_user)
+        db.session.commit()
+
+        flash('Cadastro realizado com sucesso. Faça login.')
         return redirect(url_for('login'))
 
     return render_template('cadastro.html')
@@ -49,12 +70,11 @@ def login():
     if request.method == 'POST':
         email = request.form.get('email')
         password = request.form.get('password')
+        user = User.query.filter_by(email=email).first()
 
-        user_hashed_password = users.get(email)
-
-        if user_hashed_password and checkpw(password.encode('utf-8'), user_hashed_password):
-            user = User(email)
+        if user and bcrypt.check_password_hash(user.password, password):  
             login_user(user)
+            flash('Login realizado com sucesso.')
             return redirect(url_for('dashboard'))
         else:
             flash('E-mail ou senha incorretos.')

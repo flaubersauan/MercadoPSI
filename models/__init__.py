@@ -1,7 +1,7 @@
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin
 
-db = SQLAlchemy
+db = SQLAlchemy()
 
 class User(db.Model , UserMixin):
     __tablename__ = 'usuario'
@@ -10,13 +10,13 @@ class User(db.Model , UserMixin):
     email = db.Column(db.String(180) , unique = True , nullable = False)
     password = db.Column(db.String(180) , nullable = False)
 
-    produtos_vendidos = db.relationship('ProdutoVendido', backref='vendedor', lazy=True)
+    produtos_vendidos = db.relationship('Produtos_Vendidos', backref='vendedor', lazy=True)
 
 class Produtos(db.Model):
     __tablename__ = 'tb_Produtos'
 
     id_produto = db.Column(db.Integer , primary_key = True , autoincrement = True)
-    nome_produto = db.Column(db.Striger(180) , nullable = False)
+    nome_produto = db.Column(db.String(180) , nullable = False)
     preco_produto = db.Column(db.Numeric(10,2) , nullable = False)
 
 class Produtos_Vendidos(db.Model):

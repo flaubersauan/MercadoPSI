@@ -113,7 +113,7 @@ main {
     display: flex;
     gap: 70px;
     background-color: #3a3a3a;
-    max-height: 400px;
+    max-height: 450px;
     flex: 1;
     padding: 30px;
     border-radius: 30px;   

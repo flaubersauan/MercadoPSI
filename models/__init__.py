@@ -17,6 +17,7 @@ class Produtos(db.Model):
 
     id_produto = db.Column(db.Integer , primary_key = True , autoincrement = True)
     nome_produto = db.Column(db.String(180) , nullable = False)
+    descricao_produto = db.Column(db.Text , nullable = True)
     preco_produto = db.Column(db.Numeric(10,2) , nullable = False)
 
 class Produtos_Vendidos(db.Model):
@@ -24,8 +25,8 @@ class Produtos_Vendidos(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     nome_produto = db.Column(db.String(100), nullable=False)
+    descricao_produto = db.Column(db.Text , nullable = True)
     preco = db.Column(db.Numeric(10, 2), nullable=False)
     data_venda = db.Column(db.DateTime, nullable=False)
-    
     usuario_id = db.Column(db.Integer, db.ForeignKey('usuario.id'), nullable=False)
 

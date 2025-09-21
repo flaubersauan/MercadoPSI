@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Carrinho de Compras
+{% endblock %}
+
+{% block content %}
+    <div class="carrinho-container">
+        <h1>Meu Carrinho de Compras</h1>
+
+        {% if produtos %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Produto</th>
+                        <th>Preço</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for produto in produtos %}
+                        <tr>
+                            <td>{{ produto.nome_produto }}</td>
+                            <td>R$ {{ "%.2f"|format(produto.preco) }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            
+            <div class="total">
+                <p>Total: <strong>R$ {{ "%.2f"|format(total) }}</strong></p>
+            </div>
+            
+        {% else %}
+            <p>Seu carrinho está vazio.</p>
+        {% endif %}
+    </div>
+
+    <div class="botoes-carrinho">
+        <a href="{{ url_for('dashboard') }}" class="btn">Continuar Comprando</a>
+    </div>
+
+{% endblock %}

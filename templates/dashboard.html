@@ -7,56 +7,91 @@
 {% block content %}
     <div class="container_cards">
         <div class="card">
-            <img src="{{url_for('static', filename='imagens/airpod.png')}}" height="70px">
-            <div class="card-content">
-                <h2>Air pods</h2>
-                <p>R$ 1.499,00</p>
-                <button>Adicionar ao carrinho <i class="fa-solid fa-cart-shopping"></i></button>
-            </div>
+            <form action="{{ url_for('adicionar_no_carrinho') }}" method="POST">
+                <img src="{{url_for('static', filename='imagens/airpod.png')}}" height="70px">
+                <div class="card-content">
+                    <h2>Air pods</h2>
+                    <p>R$ 1.499,00</p>
+                    <input type="hidden" name="nome_produto" value="Air pods">
+                    <input type="hidden" name="preco_produto" value="1499.00">
+                    <button type="submit">Adicionar ao carrinho <i class="fa-solid fa-cart-shopping"></i></button>
+                </div>
+            </form>
+        </div>
+        Passo 2: Adicionar 
         </div>
 
         <div class="card">
-            <img src="{{url_for('static', filename='imagens/cc.png')}}" height="70px">
-            <div class="card-content">
-                <h2>Livro Cleand Code</h2>
-                <p>R$ 399,00</p>
-                <form action="{{url_for('adicionar_no_carrinho')}}"></form>
-                <button>Adicionar ao carrinho <i class="fa-solid fa-cart-shopping"></i></button>
-            </div>
+            <form action="{{ url_for('adicionar_no_carrinho') }}" method="POST">
+                <img src="{{url_for('static', filename='imagens/airpod.png')}}" height="70px">
+                <div class="card-content">
+                    <h2>Air pods</h2>
+                    <p>R$ 1.499,00</p>
+                    <input type="hidden" name="nome_produto" value="Air pods">
+                    <input type="hidden" name="preco_produto" value="1499.00">
+                    <button type="submit">Adicionar ao carrinho <i class="fa-solid fa-cart-shopping"></i></button>
+                </div>
+            </form>
+        </div>
+        Passo 2: Adicionar 
         </div>
 
         <div class="card">
-            <img src="{{url_for('static', filename='imagens/notebook.png')}}" height="70px">
-            <div class="card-content">
-                <h2>Notebook </h2>
-                <p>R$ 2.299,00</p>
-                <button>Adicionar ao carrinho <i class="fa-solid fa-cart-shopping"></i></button>
-            </div>
+            <form action="{{ url_for('adicionar_no_carrinho') }}" method="POST">
+                <img src="{{url_for('static', filename='imagens/airpod.png')}}" height="70px">
+                <div class="card-content">
+                    <h2>Air pods</h2>
+                    <p>R$ 1.499,00</p>
+                    <input type="hidden" name="nome_produto" value="Air pods">
+                    <input type="hidden" name="preco_produto" value="1499.00">
+                    <button type="submit">Adicionar ao carrinho <i class="fa-solid fa-cart-shopping"></i></button>
+                </div>
+            </form>
+        </div>
+        Passo 2: Adicionar 
         </div>
 
         <div class="card">
-            <img src="{{url_for('static', filename='imagens/smartwhatc.png')}}" height="70px">
-            <div class="card-content">
-                <h2>Smartwatch</h2>
-                <p>R$ 299,00</p>
-                <button>Adicionar ao carrinho <i class="fa-solid fa-cart-shopping"></i></button>
-            </div>
+            <form action="{{ url_for('adicionar_no_carrinho') }}" method="POST">
+                <img src="{{url_for('static', filename='imagens/airpod.png')}}" height="70px">
+                <div class="card-content">
+                    <h2>Air pods</h2>
+                    <p>R$ 1.499,00</p>
+                    <input type="hidden" name="nome_produto" value="Air pods">
+                    <input type="hidden" name="preco_produto" value="1499.00">
+                    <button type="submit">Adicionar ao carrinho <i class="fa-solid fa-cart-shopping"></i></button>
+                </div>
+            </form>
+        </div>
+        Passo 2: Adicionar 
         </div> 
         <div class="card">
-            <img src="{{url_for('static', filename='imagens/m14.png')}}" height="70px">
-            <div class="card-content">
-                <h2>Samsumg Galaxy M14</h2>
-                <p>R$ 999,00</p>
-                <button>Adicionar ao carrinho <i class="fa-solid fa-cart-shopping"></i></button>
-            </div>
+            <form action="{{ url_for('adicionar_no_carrinho') }}" method="POST">
+                <img src="{{url_for('static', filename='imagens/airpod.png')}}" height="70px">
+                <div class="card-content">
+                    <h2>Air pods</h2>
+                    <p>R$ 1.499,00</p>
+                    <input type="hidden" name="nome_produto" value="Air pods">
+                    <input type="hidden" name="preco_produto" value="1499.00">
+                    <button type="submit">Adicionar ao carrinho <i class="fa-solid fa-cart-shopping"></i></button>
+                </div>
+            </form>
+        </div>
+        Passo 2: Adicionar 
         </div>
         <div class="card">
-            <img src="{{url_for('static', filename='imagens/elite2.png')}}" height="70px">
-            <div class="card-content">
-                <h2>Iphone 2 </h2>
-                <p>R$ 100,00</p>
-                <button>Adicionar ao carrinho <i class="fa-solid fa-cart-shopping"></i></button>
-            </div>
+            <form action="{{ url_for('adicionar_no_carrinho') }}" method="POST">
+                <img src="{{url_for('static', filename='imagens/airpod.png')}}" height="70px">
+                <div class="card-content">
+                    <h2>Air pods</h2>
+                    <p>R$ 1.499,00</p>
+                    <input type="hidden" name="nome_produto" value="Air pods">
+                    <input type="hidden" name="preco_produto" value="1499.00">
+                    <button type="submit">Adicionar ao carrinho <i class="fa-solid fa-cart-shopping"></i></button>
+                </div>
+            </form>
+        </div>
+        Passo 2: Adicionar 
         </div>
         
 

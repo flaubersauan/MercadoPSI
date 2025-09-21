@@ -9,7 +9,7 @@ from flask_bcrypt import *
 
 from models import (
     db,
-    User,
+    User, 
     Produtos,
     Produtos_Vendidos
 )
@@ -17,7 +17,7 @@ from models import (
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'intercurso2025' 
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:FSca*2033@localhost/mercadopsi'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:@localhost/mercadopsi'
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
@@ -72,18 +72,39 @@ def login():
 def dashboard():
     return render_template('dashboard.html')
 
-@app.route('/adicionar_no_carrinho')
+@app.route('/adicionar_no_carrinho', methods=['POST'])
 @login_required
 def adicionar_no_carrinho():
-    return render_template('visualizar_carrinho.html')
+    try:
+        nome_produto = request.form.get('nome_produto')
+        preco_produto = request.form.get('preco_produto')
 
+        # Criar a nova entrada na tabela, sem o id do usuário
+        item_carrinho = Produtos_Vendidos(
+            nome_produto=nome_produto,
+            preco=preco_produto
+        )
 
-@app.route('/visualizar_carrinho.html')
-@login_required 
-def visualizar_carrinho(): 
-    return render_template('visualizar_carrinho.html') 
+        db.session.add(item_carrinho)
+        db.session.commit()
+        
+        flash(f'✅ Produto "{nome_produto}" adicionado ao carrinho com sucesso!')
+    
+    except Exception as e:
+        db.session.rollback()
+        flash(f'❌ Erro ao adicionar o produto ao carrinho: {e}')
 
+    return redirect(url_for('visualizar_carrinho'))
 
+@app.route('/visualizar_carrinho')
+@login_required
+def visualizar_carrinho():
+    # Buscar todos os produtos no carrinho (sem filtro de usuário)
+    produtos_no_carrinho = Produtos_Vendidos.query.all()
+    
+    total_carrinho = sum(item.preco for item in produtos_no_carrinho)
+    
+    return render_template('visualizar_carrinho.html', produtos=produtos_no_carrinho, total=total_carrinho)
 
 #Quando tivermos o dashboard o logout será util 
 # @app.route('/logout')

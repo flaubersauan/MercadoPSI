@@ -74,7 +74,7 @@ form{
     box-shadow: 0 0 2px black;
     font-size: 18px;
     font-family: 'Poppins';
-    background-color: #8A2BE2;
+    background-color: #ffffff;
 }
 .senha input{
     min-height: 50px;
@@ -86,7 +86,7 @@ form{
     box-shadow: 0 0 2px black;
     font-size: 18px;
     font-family: 'Poppins';
-    background-color: #8A2BE2;
+    background-color: #ffffff;
 }
 
 .email input:focus, .senha input:focus {
@@ -153,13 +153,9 @@ button:hover{
     justify-content: center;
     align-items: center;
     position: relative;
-    animation: pulse 2s infinite;
 }
 
 i{
     color: #8A2BE2;
 }
 
-a form {
-    color
-}

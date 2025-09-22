@@ -20,7 +20,9 @@
                 <div class="user">
                     <i class="fa-regular fa-user"></i>
                     <p>Olá, {{current_user.email}}</p>
+                    
                 </div>
+                <a href="{{url_for('logout')}}"><i class="fa fa-sign-out" aria-hidden="true"></i></a>
             </div>
         
         {% endblock %}

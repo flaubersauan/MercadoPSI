@@ -21,6 +21,11 @@
                         <tr>
                             <td>{{ produto.nome_produto }}</td>
                             <td>R$ {{ "%.2f"|format(produto.preco) }}</td>
+                            <td>
+                                <form action="{{ url_for('remover_do_carrinho', produto_id=produto.id) }}" method="POST" style="display:inline;">
+                                <button type="submit" style="background:none; border:none; color:white; cursor:pointer;">✖</button>
+                                </form>
+                            </td>
                         </tr>
                     {% endfor %}
                 </tbody>
@@ -36,7 +41,7 @@
     </div>
 
     <div class="botoes-carrinho">
-        <a href="{{ url_for('dashboard') }}" class="btn">Continuar Comprando</a>
+        <a href="{{ url_for('dashboard') }}">Continuar Comprando</a>
     </div>
 
 {% endblock %}

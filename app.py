@@ -1,7 +1,7 @@
 from flask import * 
 from flask_login import * 
 from flask_bcrypt import *
-
+from datetime import datetime
 #import os 
 # import dotenv
 # dotenv.load_dotenv()
@@ -79,10 +79,12 @@ def adicionar_no_carrinho():
         nome_produto = request.form.get('nome_produto')
         preco_produto = request.form.get('preco_produto')
 
-        # Criar a nova entrada na tabela, sem o id do usuário
+        # Criar a nova entrada associada ao usuário logado
         item_carrinho = Produtos_Vendidos(
             nome_produto=nome_produto,
-            preco=preco_produto
+            preco=preco_produto,
+            data_venda=datetime.now(),
+            usuario_id=current_user.id
         )
 
         db.session.add(item_carrinho)
@@ -99,8 +101,8 @@ def adicionar_no_carrinho():
 @app.route('/visualizar_carrinho')
 @login_required
 def visualizar_carrinho():
-    # Buscar todos os produtos no carrinho (sem filtro de usuário)
-    produtos_no_carrinho = Produtos_Vendidos.query.all()
+    # Buscar apenas os produtos do usuário logado
+    produtos_no_carrinho = Produtos_Vendidos.query.filter_by(usuario_id=current_user.id).all()
     
     total_carrinho = sum(item.preco for item in produtos_no_carrinho)
     

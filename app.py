@@ -108,13 +108,14 @@ def visualizar_carrinho():
     
     return render_template('visualizar_carrinho.html', produtos=produtos_no_carrinho, total=total_carrinho)
 
-#Quando tivermos o dashboard o logout será util 
-# @app.route('/logout')
-# @login_required #
-#  def logout(): 
-# # logout_user() 
-# # flash('Você foi desconectado.')
-#  # return redirect(url_for('index'))
+@app.route("/logout")
+@login_required
+def logout():
+    logout_user()
+    flash("Você foi desconectado.", "info")
+    return redirect(url_for("index"))
+
+
 
 
 

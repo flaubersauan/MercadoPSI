@@ -13,6 +13,8 @@ body {
     flex-direction: column;
     background: linear-gradient(135deg, #000000, #1e1e1e);
     padding: 15px;
+    padding-right: 40px;
+    padding-left: 40px;
 }
 
 header {
@@ -59,23 +61,29 @@ main {
 }
 
 .card {
+    display: flex;
     background-color: #fff;
     border-radius: 12px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     overflow: hidden;
-    display: flex;
     flex-direction: column;
     transition: transform 0.2s;
     flex: 1;
+    justify-content: space-between;
+    padding: 30px;
 }
 .card:hover {
     transform: translateY(-5px);
 }
 .card img {
-    width: 100%;
+    width: 80%;
     height: 120px;
 }
-
+.form{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
 .card-content {
     padding: 15px;
     flex-grow: 1;
@@ -117,4 +125,47 @@ main {
     padding: 30px;
     border-radius: 30px;   
     max-height: 450px;
+}
+.carrinho-container {
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: #3a3a3a;
+    border-radius: 30px;
+    flex: 1;
+    max-height: 500px;
+   
+}
+
+.carrinho-container h1{
+    color: #fff;
+}
+table th,tr{
+    margin: 20px;
+    color: white;
+}
+.total{
+    color: white;
+}
+.botoes-carrinho{
+    display: flex;
+    border: none;
+    cursor: pointer;
+    background-color: green;
+    color: white;
+    height: 50px;
+    width: 100%;
+    max-width: 200px;
+    border-radius: 40px;
+    box-shadow: 0 0 2px black;
+    font-size: 20px;
+    font-family: 'Poppins';
+    align-items: center;
+    justify-content: center;
+}
+.botoes-carrinho a{
+    font-size: 14px;
+    text-decoration: none;
+    color: white;
 }

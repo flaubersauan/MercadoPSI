@@ -27,7 +27,6 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login' 
 
-
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
@@ -108,14 +107,12 @@ def visualizar_carrinho():
     
     return render_template('visualizar_carrinho.html', produtos=produtos_no_carrinho, total=total_carrinho)
 
-#Quando tivermos o dashboard o logout será util 
-# @app.route('/logout')
-# @login_required #
-#  def logout(): 
-# # logout_user() 
-# # flash('Você foi desconectado.')
-#  # return redirect(url_for('index'))
-
+@app.route('/logout')
+@login_required #
+def logout(): 
+    logout_user() 
+    flash('Você foi desconectado.')
+    return redirect(url_for('index'))
 
 
 #  # um arq .env (sugestao )

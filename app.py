@@ -2,10 +2,10 @@ from flask import *
 from flask_login import * 
 from flask_bcrypt import *
 from datetime import datetime
+
 #import os 
 # import dotenv
 # dotenv.load_dotenv()
-
 
 from models import (
     db,
@@ -107,13 +107,26 @@ def visualizar_carrinho():
     
     return render_template('visualizar_carrinho.html', produtos=produtos_no_carrinho, total=total_carrinho)
 
-@app.route('/logout')
-@login_required #
-def logout(): 
-    logout_user() 
-    flash('Você foi desconectado.')
-    return redirect(url_for('index'))
+@app.route('/remover_do_carrinho/<int:produto_id>', methods=['POST'])
+@login_required
+def remover_do_carrinho(produto_id):
+    produto = Produtos_Vendidos.query.filter_by(id=produto_id, usuario_id=current_user.id).first()
+    
+    if produto:
+        db.session.delete(produto)
+        db.session.commit()
+        flash(f'❌ Produto "{produto.nome_produto}" removido do carrinho.')
+    else:
+        flash('Produto não encontrado ou não pertence a este usuário.')
+    
+    return redirect(url_for('visualizar_carrinho'))
 
+@app.route("/logout")
+@login_required
+def logout():
+    logout_user()
+    flash("Você foi desconectado.", "info")
+    return redirect(url_for("index"))
 
 #  # um arq .env (sugestao )
 if __name__ == "__main__":

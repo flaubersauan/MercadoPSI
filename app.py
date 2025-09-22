@@ -3,7 +3,8 @@ from flask_login import *
 from flask_bcrypt import *
 from datetime import datetime
 from sqlalchemy import func
-#import os 
+from decimal import Decimal
+
 # import dotenv
 # dotenv.load_dotenv()
 
@@ -11,7 +12,8 @@ from models import (
     db,
     User, 
     Produtos,
-    Produtos_Vendidos
+    Produtos_Vendidos ,
+    Cupom
 )
 
 app = Flask(__name__)
@@ -100,7 +102,6 @@ def adicionar_no_carrinho():
 @app.route('/visualizar_carrinho')
 @login_required
 def visualizar_carrinho():
-    # Agrupar produtos iguais e contar quantos de cada
     produtos_agrupados = (
         db.session.query(
             Produtos_Vendidos.nome_produto,
@@ -112,14 +113,61 @@ def visualizar_carrinho():
         .all()
     )
 
-    # Calcular total do carrinho
-    total_carrinho = sum(item.preco_total for item in produtos_agrupados)
+    total_carrinho = sum(item.preco_total for item in produtos_agrupados) if produtos_agrupados else Decimal('0.00')
+    
+    desconto = session.get('cupom_desconto', 0.0)
+    
+    if desconto > 0:
+        desconto_decimal = Decimal(str(desconto))
+        total_carrinho = total_carrinho * (Decimal('1.0') - (desconto_decimal / Decimal('100.0')))
+    
+    from models import Cupom 
+    cupons_disponiveis = Cupom.query.filter_by(ativo=True).all()
 
     return render_template(
         'visualizar_carrinho.html',
         produtos=produtos_agrupados,
-        total=total_carrinho
+        total=total_carrinho,
+        desconto=desconto,
+        cupons=cupons_disponiveis
     )
+
+
+@app.route('/aplicar_cupom', methods=['POST'])
+@login_required
+def aplicar_cupom():
+    codigo_cupom = request.form.get('codigo_cupom').upper()  
+    
+    cupom = Cupom.query.filter_by(codigo=codigo_cupom, ativo=True).first()
+
+    if cupom:
+        if cupom.data_expiracao and cupom.data_expiracao < datetime.now():
+            flash('❌ O cupom inserido está expirado.', 'error')
+        else:
+            session['cupom_desconto'] = cupom.desconto
+            flash(f'✅ Cupom "{cupom.codigo}" aplicado com sucesso! Desconto de {cupom.desconto}%.', 'success')
+    else:
+        flash('❌ Código de cupom inválido ou expirado.', 'error')
+
+    return redirect(url_for('visualizar_carrinho'))
+
+@app.route('/finalizar_compra', methods=['POST'])
+@login_required
+def finalizar_compra():
+    itens_carrinho = Produtos_Vendidos.query.filter_by(usuario_id=current_user.id).all()
+
+    if not itens_carrinho:
+        flash('Seu carrinho está vazio.')
+        return redirect(url_for('visualizar_carrinho'))
+
+    for item in itens_carrinho:
+        db.session.delete(item)
+    
+    db.session.commit()
+    
+    flash('🎉 Compra finalizada com sucesso! Seu carrinho foi esvaziado.')
+    
+    return redirect(url_for('dashboard'))
 
 
 @app.route('/remover_uma_unidade/<nome_produto>', methods=['POST'])

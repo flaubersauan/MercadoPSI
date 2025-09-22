@@ -2,7 +2,7 @@ from flask import *
 from flask_login import * 
 from flask_bcrypt import *
 from datetime import datetime
-
+from sqlalchemy import func
 #import os 
 # import dotenv
 # dotenv.load_dotenv()
@@ -17,7 +17,7 @@ from models import (
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'intercurso2025' 
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:@localhost/mercadopsi'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:FSca*2033@localhost/mercadopsi'
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
@@ -100,25 +100,44 @@ def adicionar_no_carrinho():
 @app.route('/visualizar_carrinho')
 @login_required
 def visualizar_carrinho():
-    # Buscar apenas os produtos do usuário logado
-    produtos_no_carrinho = Produtos_Vendidos.query.filter_by(usuario_id=current_user.id).all()
-    
-    total_carrinho = sum(item.preco for item in produtos_no_carrinho)
-    
-    return render_template('visualizar_carrinho.html', produtos=produtos_no_carrinho, total=total_carrinho)
+    # Agrupar produtos iguais e contar quantos de cada
+    produtos_agrupados = (
+        db.session.query(
+            Produtos_Vendidos.nome_produto,
+            func.count(Produtos_Vendidos.id).label('quantidade'),
+            func.sum(Produtos_Vendidos.preco).label('preco_total')
+        )
+        .filter(Produtos_Vendidos.usuario_id == current_user.id)
+        .group_by(Produtos_Vendidos.nome_produto)
+        .all()
+    )
 
-@app.route('/remover_do_carrinho/<int:produto_id>', methods=['POST'])
+    # Calcular total do carrinho
+    total_carrinho = sum(item.preco_total for item in produtos_agrupados)
+
+    return render_template(
+        'visualizar_carrinho.html',
+        produtos=produtos_agrupados,
+        total=total_carrinho
+    )
+
+
+@app.route('/remover_uma_unidade/<nome_produto>', methods=['POST'])
 @login_required
-def remover_do_carrinho(produto_id):
-    produto = Produtos_Vendidos.query.filter_by(id=produto_id, usuario_id=current_user.id).first()
-    
+def remover_uma_unidade(nome_produto):
+    produto = (
+        Produtos_Vendidos.query
+        .filter_by(nome_produto=nome_produto, usuario_id=current_user.id)
+        .first()
+    )
+
     if produto:
         db.session.delete(produto)
         db.session.commit()
-        flash(f'❌ Produto "{produto.nome_produto}" removido do carrinho.')
+        flash(f'❌ 1 unidade de "{nome_produto}" foi removida do carrinho.')
     else:
         flash('Produto não encontrado ou não pertence a este usuário.')
-    
+
     return redirect(url_for('visualizar_carrinho'))
 
 @app.route("/logout")

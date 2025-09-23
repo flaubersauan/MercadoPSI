@@ -98,9 +98,6 @@ Um marketplace simples feito em Flask para a venda de livros, cursos e equipamen
     http://localhost:5000
     ```
 
-### ⚙️ Testes
-
-Não foram encontrados comandos de teste específicos no código fornecido.
 
 ### 🛠️ Tecnologias & Libs
 

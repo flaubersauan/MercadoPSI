@@ -1,57 +1,72 @@
 {% extends 'base.html' %}
 
 {% block title %}
-Meu Carrinho de Compras
+    Carrinho de Compras
 {% endblock %}
 
 {% block content %}
-<div class="carrinho-container">
-    <h1>Meu Carrinho de Compras</h1>
+    <div class="carrinho-container">
+        <h1>Meu Carrinho de Compras</h1>
 
-    {% if produtos %}
-        <table>
-            <thead>
-                <tr>
-                    <th>Produto</th>
-                    <th>Preço unitário</th>
-                    <th>Quantidade</th>
-                    <th>Total</th>
-                    <th>Ações</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for produto in produtos %}
+        {% if produtos %}
+            <table>
+                <thead>
                     <tr>
-                        <td>{{ produto.nome_produto }}</td>
-                        <td>R$ {{ "%.2f"|format(produto.preco) }}</td>
-                        <td>
-                            <form action="{{ url_for('atualizar_quantidade', nome_produto=produto.nome_produto) }}" method="POST" style="display:flex; gap:5px; justify-content:center; align-items:center;">
-                                <input type="number" name="quantidade" value="{{ produto.quantidade }}" min="1" style="width:60px; padding:3px; border-radius:5px; border:none; text-align:center;">
-                                <button type="submit" style="padding:5px 10px; background:#6a0dad; color:white; border:none; border-radius:5px; cursor:pointer;">Atualizar</button>
-                            </form>
-                        </td>
-                        <td>R$ {{ "%.2f"|format(produto.preco * produto.quantidade) }}</td>
-                        <td>
-                            <form action="{{ url_for('remover_uma_unidade', nome_produto=produto.nome_produto) }}" method="POST">
-                                <button type="submit" style="background:none; border:none; cursor:pointer;">
+                        <th>Produto</th>
+                        <th>Preço</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for produto in produtos %}
+                        <tr>
+                            <td>{{ produto.nome_produto }} ({{ produto.quantidade }}x)</td>
+                            <td>R$ {{ "%.2f"|format(produto.preco_total) }}</td>
+                            <td>
+                                
+                            <form action="{{ url_for('remover_uma_unidade', nome_produto=produto.nome_produto) }}" method="POST" style="display:inline;">
+                                <button type="submit" style="background:none; border:none; color:white; cursor:pointer;">
                                     <i class="fa-solid fa-trash"></i>
                                 </button>
                             </form>
-                        </td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
 
-        <div class="total">
-            <p>Total: <strong>R$ {{ "%.2f"|format(total) }}</strong></p>
-        </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            
+            <div class="total">
+                <p>Total: <strong>R$ {{ "%.2f"|format(total) }}</strong></p>
+            </div>
+            
+        {% else %}
+            <p>Seu carrinho está vazio.</p>
+        {% endif %}
+    </div>
 
-        <div class="botoes-carrinho" style="margin-top:20px;">
-            <a href="{{ url_for('dashboard') }}">Continuar Comprando</a>
-        </div>
-    {% else %}
-        <p style="color:white; text-align:center; margin-top:20px;">Seu carrinho está vazio.</p>
-    {% endif %}
+    <div class="botoes-carrinho">
+        <a href="{{ url_for('dashboard') }}">Continuar Comprando</a>
+    </div>
+    
+    {% if produtos %}
+<div class="cupom-form">
+    <form action="{{ url_for('aplicar_cupom') }}" method="POST">
+        <select name="codigo_cupom" id="cupom_select">
+            <option value="">Selecione um cupom...</option>
+            <option value="NO_CUPOM">Sem cupom</option>
+            {% for cupom in cupons %}
+                <option value="{{ cupom.codigo }}">{{ cupom.codigo }} ({{ cupom.desconto }}% de desconto)</option>
+            {% endfor %}
+        </select>
+        <button type="submit">Aplicar Cupom</button>
+    </form>
 </div>
+
+    <div class="botoes-acao">
+        <form action="{{ url_for('finalizar_compra') }}" method="POST">
+            <button type="submit" class="botao-finalizar">Finalizar Compra</button>
+        </form>
+    </div>
+    {%endif %}
+
 {% endblock %}

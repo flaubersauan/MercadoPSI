@@ -30,3 +30,11 @@ class Produtos_Vendidos(db.Model):
     quantidade = db.Column(db.Integer, default=1, nullable=False)  # 👈 novo campo
     data_venda = db.Column(db.DateTime, nullable=False)
     usuario_id = db.Column(db.Integer, db.ForeignKey('usuario.id'), nullable=False)
+
+class Cupom(db.Model):
+    __tablename__ = 'cupons'
+    id = db.Column(db.Integer, primary_key=True)
+    codigo = db.Column(db.String(20), unique=True, nullable=False)
+    desconto = db.Column(db.Float, nullable=False)
+    ativo = db.Column(db.Boolean, default=True)
+    data_expiracao = db.Column(db.DateTime, nullable=True)

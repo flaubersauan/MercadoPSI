@@ -27,6 +27,7 @@ class Produtos_Vendidos(db.Model):
     nome_produto = db.Column(db.String(100), nullable=False)
     descricao_produto = db.Column(db.Text , nullable = True)
     preco = db.Column(db.Numeric(10, 2), nullable=False)
+    quantidade = db.Column(db.Integer, default=1, nullable=False)  # 👈 novo campo
     data_venda = db.Column(db.DateTime, nullable=False)
     usuario_id = db.Column(db.Integer, db.ForeignKey('usuario.id'), nullable=False)
 

@@ -1,134 +1,147 @@
-# Mercado - PSI
+### Mercado - PSI
 
-Um marketplace simples feito em Flask para venda de livros, cursos e equipamentos de programação e hardware (processadores, placas, etc).
+Um marketplace simples feito em Flask para a venda de livros, cursos e equipamentos de programação e hardware (processadores, placas, etc.).
 
-## Tecnologias usadas
+1.  **Descrição:** Um marketplace simples feito em Flask para a venda de livros, cursos e equipamentos de programação e hardware (processadores, placas, etc.).
 
-* Python 3.17
-* Flask
-* SQLAlchemy (ORM)
-* MySQL (Banco de dados)
-* Bootstrap 
+2.  **Link do projeto em produção:** Não há link de projeto em produção disponível.
 
-## Funcionalidades
+3.  **Lista com as funcionalidades:**
 
-* CRUD completo (Criar, Ler, Atualizar, Deletar) para produtos: livros, cursos e equipamentos.
-* Interface simples para gerenciamento dos produtos.
-* Persistência dos dados com MySQL e SQLAlchemy.
+      * CRUD completo (Criar, Ler, Atualizar, Deletar) para produtos: livros, cursos e equipamentos.
+      * Interface simples para gerenciamento dos produtos.
+      * Persistência dos dados com MySQL e SQLAlchemy.
 
----
+-----
 
-## Como clonar e rodar localmente
+### 🔧 Instalação
 
-### Pré-requisitos
+  * **Pré-requisitos:**
 
-* Python 3 instalado
-* MySQL instalado e configurado
-* Git instalado
+      * Python 3 instalado
+      * MySQL instalado e configurado
+      * Git instalado
 
-### Passos
+  * **Passos:**
 
-1. Clone o repositório:
+    I.  Clone o repositório:
 
-```bash
-git clone https://github.com/flaubersauan/MercadoPSI.git
-cd mercadoPSI
-```
+    <!-- end list -->
 
-2. Crie e ative um ambiente virtual (recomendado):
+    ```bash
+    git clone https://github.com/flaubersauan/MercadoPSI.git
+    cd mercadoPSI
+    ```
 
-```bash
-python -m venv venv
-# No Windows
-venv\Scripts\activate
-# No Linux/Mac
-source venv/bin/activate
-```
+    II.  Crie e ative um ambiente virtual (recomendado):
 
-3. Instale as dependências:
+    <!-- end list -->
 
-```bash
-pip install -r requirements.txt
-```
+    ```bash
+    python -m venv venv
+    # No Windows
+    venv\Scripts\activate
+    # No Linux/Mac
+    source venv/bin/activate
+    ```
 
-4. Configure o banco de dados MySQL:
+    III.  Instale as dependências:
 
-* Crie uma database chamado `mercadoPSI` (ou o nome que preferir):
+    <!-- end list -->
 
-```sql
-CREATE DATABASE mercadopsi CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-```
+    ```bash
+    pip install -r requirements.txt
+    ```
 
-* Atualize a string de conexão no arquivo de configuração do Flask:
+    IV.  Configure o banco de dados MySQL:
 
-```python
-SQLALCHEMY_DATABASE_URI = 'mysql://root:@127.0.0.1:3306/mercadopsiI'
-```
+    <!-- end list -->
 
-5. Inicialize o banco de dados (criação direta das tabelas):
+      * Crie uma database chamada `mercadopsi` (ou o nome que preferir):
 
-```python
-from app import db
-db.create_all()
-```
+    <!-- end list -->
 
-6. Rode a aplicação:
+    ```sql
+    CREATE DATABASE mercadopsi CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+    ```
 
-```bash
-flask run
-```
+      * Atualize a string de conexão no arquivo `app.py`:
 
-7. Acesse no navegador:
+    <!-- end list -->
 
-```
-http://localhost:5000
-```
+    ```python
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:FSca*2033@localhost/mercadopsi'
+    ```
 
----
+    V.  Inicialize o banco de dados (criação direta das tabelas):
 
-## Estrutura do projeto
+    <!-- end list -->
 
-Alteravel
+    ```python
+    from app import db
+    db.create_all()
+    ```
 
-```
-mercadoPSI/
-│
-├── templates/
-│   ├── base.html
-│   ├── cadastro.html
-│   ├── dashboard.html
-│   ├── index.html
-│   ├── login.html
-│   ├── produtos.html
-├── static/
-│   ├── imagens/
-│   ├── formularios.css
-│   ├── index.css
-│   ├── style.css
-├── models/
-│   ├── __init__.py
-├── app.py
-├── criar_tabelas.py
-├── debug_workbench.py
-├── requirements.txt
-└── run.py
-```
+    VI.  Rode a aplicação:
 
----
+    <!-- end list -->
 
-## Como contribuir
+    ```bash
+    flask run
+    ```
 
-1. Fork o projeto
-2. Crie sua branch: `git checkout -b minha-feature`
-3. Commit suas alterações: `git commit -m 'Adicionei nova feature'`
-4. Push para a branch: `git push origin minha-feature`
-5. Abra um Pull Request
+    VII.  Acesse no navegador:
 
----
+    <!-- end list -->
 
-## Contato
+    ```
+    http://localhost:5000
+    ```
 
-Equipe Mercado PSI - [emailresponsavel@gmail.com](mailto:paulofernandesalves30@gmail.com)
+### ⚙️ Testes
 
----
+Não foram encontrados comandos de teste específicos no código fornecido.
 
+### 🛠️ Tecnologias & Libs
+
+  * **Tecnologias:**
+
+      * Python 3.17
+      * Flask
+      * SQLAlchemy (ORM)
+      * MySQL (Banco de dados)
+      * Bootstrap
+
+  * **Bibliotecas (listadas no `requirements.txt`):**
+
+      * `bcrypt`
+      * `blinker`
+      * `cffi`
+      * `click`
+      * `colorama`
+      * `cryptography`
+      * `flask`
+      * `Flask-Bcrypt`
+      * `Flask-Login`
+      * `flask-sqlalchemy`
+      * `greenlet`
+      * `importlib-metadata`
+      * `itsdangerous`
+      * `jinja2`
+      * `MarkupSafe`
+      * `mysql-connector`
+      * `mysqlclient`
+      * `pycparser`
+      * `pymysql`
+      * `python-dotenv`
+      * `sqlalchemy`
+      * `typing-extensions`
+      * `werkzeug`
+      * `zipp`
+
+### ✒️ Autor
+
+  * Alan Pereira da Silva
+  * Flauber Sauan Candido Alves
+  * João Paulo Fernandes Alves
+  * José Ezequiel Oliveira Silva

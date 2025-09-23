@@ -1,6 +1,8 @@
 from app import app, db
 from datetime import datetime
 
+from models import Cupom
+
 with app.app_context():
     cupom1 = Cupom(codigo='SAVE10', desconto=10.0, data_expiracao=datetime(2025, 12, 31))
     cupom2 = Cupom(codigo='DESCONTO25', desconto=25.0, data_expiracao=datetime(2025, 11, 30))

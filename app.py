@@ -76,21 +76,28 @@ def dashboard():
 def adicionar_no_carrinho():
     try:
         nome_produto = request.form.get('nome_produto')
-        preco_produto = request.form.get('preco_produto')
+        preco_produto = float(request.form.get('preco_produto'))
 
-        # Criar a nova entrada associada ao usuário logado
-        item_carrinho = Produtos_Vendidos(
+        produto_existente = Produtos_Vendidos.query.filter_by(
             nome_produto=nome_produto,
-            preco=preco_produto,
-            data_venda=datetime.now(),
             usuario_id=current_user.id
-        )
+        ).first()
 
-        db.session.add(item_carrinho)
+        if produto_existente:
+            produto_existente.quantidade += 1
+        else:
+            produto_existente = Produtos_Vendidos(
+                nome_produto=nome_produto,
+                preco=preco_produto,
+                quantidade=1,
+                data_venda=datetime.now(),
+                usuario_id=current_user.id
+            )
+            db.session.add(produto_existente)
+
         db.session.commit()
-        
         flash(f'✅ Produto "{nome_produto}" adicionado ao carrinho com sucesso!')
-    
+
     except Exception as e:
         db.session.rollback()
         flash(f'❌ Erro ao adicionar o produto ao carrinho: {e}')
@@ -100,45 +107,89 @@ def adicionar_no_carrinho():
 @app.route('/visualizar_carrinho')
 @login_required
 def visualizar_carrinho():
-    # Agrupar produtos iguais e contar quantos de cada
-    produtos_agrupados = (
-        db.session.query(
-            Produtos_Vendidos.nome_produto,
-            func.count(Produtos_Vendidos.id).label('quantidade'),
-            func.sum(Produtos_Vendidos.preco).label('preco_total')
-        )
-        .filter(Produtos_Vendidos.usuario_id == current_user.id)
-        .group_by(Produtos_Vendidos.nome_produto)
-        .all()
-    )
+    produtos = Produtos_Vendidos.query.filter_by(usuario_id=current_user.id).all()
 
-    # Calcular total do carrinho
-    total_carrinho = sum(item.preco_total for item in produtos_agrupados)
+    total_carrinho = sum(produto.preco * produto.quantidade for produto in produtos)
 
     return render_template(
         'visualizar_carrinho.html',
-        produtos=produtos_agrupados,
+        produtos=produtos,
         total=total_carrinho
     )
+
+@app.route('/aumentar_quantidade/<nome_produto>', methods=['POST'])
+@login_required
+def aumentar_quantidade(nome_produto):
+    produto = Produtos_Vendidos.query.filter_by(
+        nome_produto=nome_produto,
+        usuario_id=current_user.id
+    ).first()
+    
+    if produto:
+        produto.quantidade += 1
+        db.session.commit()
+        flash(f'Quantidade de "{produto.nome_produto}" aumentada.')
+    return redirect(url_for('visualizar_carrinho'))
+
+
+@app.route('/diminuir_quantidade/<nome_produto>', methods=['POST'])
+@login_required
+def diminuir_quantidade(nome_produto):
+    produto = Produtos_Vendidos.query.filter_by(
+        nome_produto=nome_produto,
+        usuario_id=current_user.id
+    ).first()
+    
+    if produto:
+        if produto.quantidade > 1:
+            produto.quantidade -= 1
+        else:
+            db.session.delete(produto)
+        db.session.commit()
+        flash(f'Quantidade de "{produto.nome_produto}" diminuída.')
+    return redirect(url_for('visualizar_carrinho'))
 
 
 @app.route('/remover_uma_unidade/<nome_produto>', methods=['POST'])
 @login_required
 def remover_uma_unidade(nome_produto):
-    produto = (
-        Produtos_Vendidos.query
-        .filter_by(nome_produto=nome_produto, usuario_id=current_user.id)
-        .first()
-    )
+    produto = Produtos_Vendidos.query.filter_by(
+        nome_produto=nome_produto,
+        usuario_id=current_user.id
+    ).first()
 
     if produto:
-        db.session.delete(produto)
+        if produto.quantidade > 1:
+            produto.quantidade -= 1
+        else:
+            db.session.delete(produto)
         db.session.commit()
         flash(f'❌ 1 unidade de "{nome_produto}" foi removida do carrinho.')
     else:
         flash('Produto não encontrado ou não pertence a este usuário.')
 
     return redirect(url_for('visualizar_carrinho'))
+
+@app.route('/atualizar_quantidade/<nome_produto>', methods=['POST'])
+@login_required
+def atualizar_quantidade(nome_produto):
+    nova_quantidade = request.form.get('quantidade', type=int)
+
+    if nova_quantidade and nova_quantidade > 0:
+        produto = Produtos_Vendidos.query.filter_by(
+            nome_produto=nome_produto,
+            usuario_id=current_user.id
+        ).first()
+        
+        if produto:
+            produto.quantidade = nova_quantidade
+            db.session.commit()
+            flash(f'Quantidade de "{produto.nome_produto}" atualizada para {nova_quantidade}.')
+    else:
+        flash('Quantidade inválida. Deve ser maior que zero.')
+
+    return redirect(url_for('visualizar_carrinho'))
+
 
 @app.route("/logout")
 @login_required
@@ -147,10 +198,10 @@ def logout():
     flash("Você foi desconectado.", "info")
     return redirect(url_for("index"))
 
-#  # um arq .env (sugestao )
 if __name__ == "__main__":
-    # Cria as tabelas ao iniciar
     with app.app_context():
+        db.drop_all()
         db.create_all()
-        print("✅ Tabelas criadas com sucesso!")
+        print("✅ Tabelas recriadas com sucesso!")
     app.run(debug=True)
+

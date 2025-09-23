@@ -13,7 +13,7 @@ from models import (
     User, 
     Produtos,
     Produtos_Vendidos ,
-    #Cupom
+    Cupom
 )
 
 app = Flask(__name__)
@@ -121,14 +121,15 @@ def visualizar_carrinho():
         desconto_decimal = Decimal(str(desconto))
         total_carrinho = total_carrinho * (Decimal('1.0') - (desconto_decimal / Decimal('100.0')))
     
-    # from models import Cupom 
-    # cupons_disponiveis = Cupom.query.filter_by(ativo=True).all()
+    from models import Cupom 
+    cupons_disponiveis = Cupom.query.filter_by(ativo=True).all()
 
     return render_template(
         'visualizar_carrinho.html',
         produtos=produtos_agrupados,
         total=total_carrinho,
         desconto=desconto,
+        cupons=cupons_disponiveis
     )
 
 
@@ -193,35 +194,6 @@ def remover_uma_unidade(nome_produto):
 
     return redirect(url_for('visualizar_carrinho'))
 
-@app.route('/atualizar_quantidade/<nome_produto>', methods=['POST'])
-@login_required
-def atualizar_quantidade(nome_produto):
-    nova_qtd = int(request.form.get('quantidade', 1))
-
-    if nova_qtd <= 0:
-        flash("A quantidade deve ser maior que zero.", "error")
-        return redirect(url_for('visualizar_carrinho'))
-
-    # Apaga os produtos atuais desse usuário/produto
-    Produtos_Vendidos.query.filter_by(
-        nome_produto=nome_produto,
-        usuario_id=current_user.id
-    ).delete()
-
-    # Recria os registros de acordo com a nova quantidade
-    for _ in range(nova_qtd):
-        item = Produtos_Vendidos(
-            nome_produto=nome_produto,
-            preco=Produtos.query.filter_by(nome=nome_produto).first().preco, # pega preço real do produto
-            data_venda=datetime.now(),
-            usuario_id=current_user.id
-        )
-        db.session.add(item)
-
-    db.session.commit()
-    flash(f'✏️ Quantidade de "{nome_produto}" atualizada para {nova_qtd}.')
-    return redirect(url_for('visualizar_carrinho'))
-
 @app.route("/logout")
 @login_required
 def logout():
@@ -236,3 +208,4 @@ if __name__ == "__main__":
         db.create_all()
         print("✅ Tabelas criadas com sucesso!")
     app.run(debug=True)
+

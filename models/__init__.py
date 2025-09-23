@@ -37,4 +37,3 @@ class Cupom(db.Model):
     desconto = db.Column(db.Float, nullable=False)
     ativo = db.Column(db.Boolean, default=True)
     data_expiracao = db.Column(db.DateTime, nullable=True)
-

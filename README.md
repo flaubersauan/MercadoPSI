@@ -114,21 +114,14 @@ mercadoPSI/
 └── run.py
 ```
 
----
 
-## Como contribuir
 
-1. Fork o projeto
-2. Crie sua branch: `git checkout -b minha-feature`
-3. Commit suas alterações: `git commit -m 'Adicionei nova feature'`
-4. Push para a branch: `git push origin minha-feature`
-5. Abra um Pull Request
+## Componentes de grupo
 
----
 
-## Contato
+Alan Pereira da Silva
+Flauber Sauan Candido Alves
+João Paulo Fernandes Alves
+José Ezequiel Oliveira Silva
 
-Equipe Mercado PSI - [emailresponsavel@gmail.com](mailto:paulofernandesalves30@gmail.com)
-
----
 

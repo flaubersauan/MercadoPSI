@@ -70,7 +70,7 @@ Um marketplace simples feito em Flask para a venda de livros, cursos e equipamen
     <!-- end list -->
 
     ```python
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:FSca*2033@localhost/mercadopsi'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:@localhost/mercadopsi'
     ```
 
     V.  Inicialize o banco de dados (criação direta das tabelas):

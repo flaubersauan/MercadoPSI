@@ -119,9 +119,9 @@ mercadoPSI/
 ## Componentes de grupo
 
 
-Alan Pereira da Silva
-Flauber Sauan Candido Alves
-João Paulo Fernandes Alves
-José Ezequiel Oliveira Silva
+- Alan Pereira da Silva
+- Flauber Sauan Candido Alves
+- João Paulo Fernandes Alves
+- José Ezequiel Oliveira Silva
 
 

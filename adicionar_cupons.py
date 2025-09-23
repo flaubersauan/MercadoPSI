@@ -1,4 +1,4 @@
-from app import app, db, Cupom
+from app import app, db
 from datetime import datetime
 
 with app.app_context():

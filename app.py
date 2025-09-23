@@ -135,7 +135,12 @@ def visualizar_carrinho():
 @app.route('/aplicar_cupom', methods=['POST'])
 @login_required
 def aplicar_cupom():
-    codigo_cupom = request.form.get('codigo_cupom').upper()  
+    codigo_cupom = request.form.get('codigo_cupom').upper()
+
+    if codigo_cupom == 'NO_CUPOM':
+        session.pop('cupom_desconto', None)
+        flash('✅ Nenhum cupom aplicado. O desconto foi removido.', 'success')
+        return redirect(url_for('visualizar_carrinho'))
     
     cupom = Cupom.query.filter_by(codigo=codigo_cupom, ativo=True).first()
 
@@ -159,6 +164,7 @@ def finalizar_compra():
         flash('Seu carrinho está vazio.')
         return redirect(url_for('visualizar_carrinho'))
 
+    # Exclui todos os itens do carrinho do usuário
     for item in itens_carrinho:
         db.session.delete(item)
     

@@ -54,5 +54,25 @@
     </div>
     
 
+    {% if produtos %}
+<div class="cupom-form">
+    <form action="{{ url_for('aplicar_cupom') }}" method="POST">
+        <select name="codigo_cupom" id="cupom_select">
+            <option value="">Selecione um cupom...</option>
+            <option value="NO_CUPOM">Sem cupom</option>
+            {% for cupom in cupons %}
+                <option value="{{ cupom.codigo }}">{{ cupom.codigo }} ({{ cupom.desconto }}% de desconto)</option>
+            {% endfor %}
+        </select>
+        <button type="submit">Aplicar Cupom</button>
+    </form>
+</div>
+
+    <div class="botoes-acao">
+        <form action="{{ url_for('finalizar_compra') }}" method="POST">
+            <button type="submit" class="botao-finalizar">Finalizar Compra</button>
+        </form>
+    </div>
+    {%endif %}
 
 {% endblock %}

@@ -17,7 +17,7 @@ def debug_completo():
     DB_PORT = os.getenv("DB_PORT", "3306")
     DB_NAME = os.getenv("DB_NAME", "mercadopsi")
     DB_USER = "root"
-    DB_PASSWORD = "FSca*2033"
+    DB_PASSWORD = ""
 
 
     print(f"Host: {DB_HOST}")
